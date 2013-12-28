@@ -78,7 +78,7 @@ class FortuneCookies_UI extends JFrame implements ActionListener {
 		flowLayout.setVgap(200);// 수평 간격 200!
 		add(FortunePanel3, BorderLayout.CENTER);
 
-		// 텍스트 필드창
+		// 텍스트 필드창///////////////////////////////////(도와주세요........^_ㅠ)
 		nameField = new JTextField(); // 텍스트필드 초기화
 		nameField.setColumns(10);
 		nameField.setText("이름을 입력하세요.");
