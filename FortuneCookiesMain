@@ -1,0 +1,138 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+import javax.swing.*;
+import javax.swing.UIManager.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+// 유저와 만나게 될 메인 화면
+
+class FortuneCookies_UI extends JFrame implements ActionListener {
+
+	// 컴포넌트를 붙여넣을 때 사용 되어질 패널 5장
+
+	JPanel FortunePanel;
+	JPanel FortunePanel1;
+	JPanel FortunePanel2;
+	JPanel FortunePanel3;
+	JPanel FortunePanel4;
+
+	// 이름을 입력할 텍스트 필드
+	JTextField nameField;
+
+	// 확인 버튼, 최소화 버튼, 닫기 버튼
+	JButton enter;
+	JButton close;
+	JButton win_minimum;
+
+	// 레이아웃
+	FlowLayout flowLayout;
+
+	// DB에 값을 전송해줄 FortuneCookies Delivery
+	FortuneCookiesVo vo = new FortuneCookiesVo();
+	String fortuneDelivery;
+
+	// UI 시작
+	public FortuneCookies_UI() {
+
+		setSize(386, 384); // 386*384 크기의 창 생성
+		setUndecorated(true); // 윈도우 보더를 없앰
+		setLayout(new BorderLayout(0, 0)); // 기본적인 레이아웃은 보더 레이아웃으로 생성한다.
+
+		// 북쪽에 배치 될 포츈 패널
+		FortunePanel = new JPanel(); // 패널 이니셜라이즈
+		flowLayout = (FlowLayout) FortunePanel.getLayout(); // 패널의 레이아웃은 플로우
+															// 레이아웃으로.
+		flowLayout.setVgap(2);
+		flowLayout.setHgap(2); // 수직. 수평의 갭은 2
+		flowLayout.setAlignment(FlowLayout.RIGHT);//
+		add(FortunePanel, BorderLayout.NORTH);
+
+		// 창 최소화 버튼
+		win_minimum = new JButton("_"); // 버튼 이니셜 라이즈. 버튼에 기본적으로 담길 문자 " _"
+		win_minimum.setFont(new Font("나눔고딕", Font.BOLD, 10));
+		FortunePanel.add(win_minimum);
+
+		// 창 닫기 버튼
+		close = new JButton("X"); // 버튼 이니셜 라이즈. 버튼에 기본적으로 담길 문자 "X"
+		close.addActionListener(this);// 버튼 작동시킬 액션 리스너
+		close.setFont(new Font("나눔고딕", Font.BOLD, 10));
+		FortunePanel.add(close);
+
+		// 남쪽에 배치될 포츈 패널 1
+		FortunePanel1 = new JPanel(); // 패널 이니셜라이즈
+		add(FortunePanel1, BorderLayout.SOUTH);
+
+		// 서쪽에 배치될 포츈 패널 2
+		FortunePanel2 = new JPanel(); // 패널 이니셜라이즈
+		add(FortunePanel2, BorderLayout.WEST);
+
+		// 동쪽에 배치될 포츈 패널 3
+		FortunePanel3 = new JPanel(); // 패널 이니셜라이즈
+		add(FortunePanel3, BorderLayout.EAST);
+
+		// 센터에 배치될 포츈 패널 4
+		FortunePanel3 = new JPanel(); // 패널 이니셜라이즈
+		flowLayout = (FlowLayout) FortunePanel.getLayout();// 패널의 레이아웃은 플로우 레이아웃
+		flowLayout.setVgap(200);// 수평 간격 200!
+		add(FortunePanel3, BorderLayout.CENTER);
+
+		// 텍스트 필드창
+		nameField = new JTextField(); // 텍스트필드 초기화
+		nameField.setColumns(10);
+		nameField.setText("이름을 입력하세요.");
+		nameField.setFont(new Font("나눔고딕", Font.PLAIN, 12));
+		FortunePanel4.add(nameField);
+
+		// 확인 버튼
+		enter = new JButton("확인");
+		enter.setFont(new Font("나눔고딕", Font.BOLD, 12));
+		enter.addActionListener(this);
+		FortunePanel4.add(enter);
+		
+		setVisible(true);
+	} // UI 끝
+
+	// 생명 호흡기 ActionPerform
+	public void actionPerformed(ActionEvent evt) {
+
+		// _버튼 클릭시 최소화 됨
+		if (evt.getSource() == close) {
+			// 최소화 소스를 구해야만해^>^........
+		}
+
+		// x 버튼 클릭시 윈도우 닫힘
+		if (evt.getSource() == close) {
+			dispose();
+		}
+
+		// name에 값을 입력할 때와 입력하지 않을 시 보이게 될 dialog
+		if (evt.getSource() == enter) {
+			String deliver = null;// getText값을 담을 deliver
+			FortuneCookiesDao dao=new FortuneCookiesDao();
+			
+			deliver = nameField.getText().toString();// nameField에서 가져온 getText값을 string으로 형변환
+			vo.setName(deliver); // 이름을 가져옴
+			
+			ArrayList<FortuneCookiesVo> list = dao.outputblessing(deliver);// 이름을 가져와서 리스트에 넣기
+			
+			FortuneCookiesVo vo = null; 
+
+			for (int i = 0; i < list.size(); i++) {
+				vo = list.get(i);
+				JOptionPane.showMessageDialog(FortuneCookies_UI.this, vo.getBlessing() + "\t");
+			}		
+		} 
+	}
+
+} // FortuneCookies Class
+
+public class FortuneCookiesMain {
+
+	public static void main(String[] args) {
+
+		FortuneCookies_UI ui = new FortuneCookies_UI();
+
+	}// main
+}
